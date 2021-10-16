@@ -12,11 +12,12 @@ def detect_face():
     from cv2 import destroyAllWindows
     from cv2 import CascadeClassifier
     from cv2 import rectangle
-    # load the photograph
+    # ingrese aqui la imagen a procesar
     pixels = imread('test6.jpg')
     # load the pre-trained model
     classifier = CascadeClassifier('haarcascade_frontalface_default.xml')
     # perform face detection
+    # clasificador sin parametros modificados
     # bboxes = classifier.detectMultiScale(pixels)
     bboxes = classifier.detectMultiScale(pixels, 1.1, 5)
     # print bounding box for each detected face
@@ -60,7 +61,12 @@ def draw_image_with_boxes(filename, result_list):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+
+    # Open cv AdaBoost algorithm
     detect_face()
+
+    # MTCNN
+    # ingrese aqui la imagen que desea analizar
     filename = 'test6.jpg'
     # load image from file
     pixels = pyplot.imread(filename)
@@ -70,4 +76,3 @@ if __name__ == '__main__':
     faces = detector.detect_faces(pixels)
     # display faces on the original image
     draw_image_with_boxes(filename, faces)
-
