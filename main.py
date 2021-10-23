@@ -1,7 +1,10 @@
 from matplotlib import pyplot
 from matplotlib.patches import Rectangle
 from mtcnn.mtcnn import MTCNN
+import os
+from statistics import mean
 
+l_conf = []
 
 def detect_face():
     # plot photo with detected faces using opencv cascade classifier
@@ -45,10 +48,11 @@ def draw_image_with_boxes(filename, result_list):
     # get the context for drawing boxes
     ax = pyplot.gca()
     # plot each box
-    print('confidence')
     for face in result_list:
-        print(face['confidence'])
-    for result in result_list:
+        l_conf.append(face['confidence'])
+
+    # print boxes in all images
+    '''for result in result_list:
         # get coordinates
         x, y, width, height = result['box']
         # create the shape
@@ -56,23 +60,38 @@ def draw_image_with_boxes(filename, result_list):
         # draw the box
         ax.add_patch(rect)
     # show the plot
-    pyplot.show()
+    pyplot.show()'''
+
+
+def detect_face_mtcnn():
+    dire = 'training_real'
+    contenido = os.listdir(dire)
+    imagenes = []
+    for imagen in contenido:
+        if os.path.isfile(os.path.join(dire, imagen)) and imagen.endswith('.jpg'):
+            filename = 'training_real/' + imagen
+            # load image from file
+            pixels = pyplot.imread(filename)
+            # create the detector, using default weights
+            detector = MTCNN()
+            # detect faces in the image
+            faces = detector.detect_faces(pixels)
+            # display faces on the original image
+            draw_image_with_boxes(filename, faces)
+
+    statistics()
+
+
+def statistics():
+    print("Promedio de confianza= " + str(mean(l_conf)))
+    print("Maxima confianza= " + str(max(l_conf)))
+    print("Minimo de confianza= " + str(min(l_conf)))
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-
     # Open cv AdaBoost algorithm
-    detect_face()
-
+    #detect_face()
     # MTCNN
-    # ingrese aqui la imagen que desea analizar
-    filename = 'test6.jpg'
-    # load image from file
-    pixels = pyplot.imread(filename)
-    # create the detector, using default weights
-    detector = MTCNN()
-    # detect faces in the image
-    faces = detector.detect_faces(pixels)
-    # display faces on the original image
-    draw_image_with_boxes(filename, faces)
+    detect_face_mtcnn()
+
