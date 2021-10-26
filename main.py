@@ -1,8 +1,9 @@
-from matplotlib import pyplot
+from matplotlib import pyplot, pyplot as plt
 from matplotlib.patches import Rectangle
 from mtcnn.mtcnn import MTCNN
 import os
 from statistics import mean
+import numpy as np
 
 l_conf = []
 
@@ -44,7 +45,7 @@ def draw_image_with_boxes(filename, result_list):
     # load the image
     data = pyplot.imread(filename)
     # plot the image
-    pyplot.imshow(data)
+    # pyplot.imshow(data)
     # get the context for drawing boxes
     ax = pyplot.gca()
     # plot each box
@@ -83,6 +84,13 @@ def detect_face_mtcnn():
 
 
 def statistics():
+
+    # the histogram of the data
+    plt.hist(l_conf, bins=[0.7, 0.8, 0.90, 0.99, 1])
+    plt.xlabel('Confianza')
+    plt.ylabel('Rostros detectados')
+    plt.title('Histograma de confianza de prediccion')
+    plt.show()
     print("Promedio de confianza= " + str(mean(l_conf)))
     print("Maxima confianza= " + str(max(l_conf)))
     print("Minimo de confianza= " + str(min(l_conf)))
